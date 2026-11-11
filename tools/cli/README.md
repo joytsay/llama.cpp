@@ -5,7 +5,7 @@
 - start server
 ```sh
 sudo docker run --rm --name lfm-vlm \
-    -p 127.0.0.1:8080:8080 \
+    -p 8080:8080 \
     -v "$(pwd)/models:/models" \
     -e LLAMA_CACHE=/models \
     ghcr.io/ggml-org/llama.cpp:server \
@@ -17,14 +17,25 @@ sudo docker run --rm --name lfm-vlm \
 ```sh
 cd llama.cpp
 cmake -S . -B build
-cmake --build build --target cli-openai-img -j 4
+cmake --build build --target cli-openai-img -j
 ```
 
 - run client
 ```sh
+# Image with prompt
 ./build/bin/cli-openai-img \
-    http://localhost:8080 ./media/llama0-logo.png "What is in this image?"
+    http://localhost:8080 ./media/llama0-logo.png -p "What is in this image?"
+
+# Complete request from file
+./build/bin/cli-openai-img \
+    http://localhost:8080 -d request.json
+
+# Inline JSON
+./build/bin/cli-openai-img \
+    http://localhost:8080 -d '{"messages":[{"role":"user","content":"Hello"}]}'
 ```
+
+With `-d`, images come from the JSON's `image_url` parts; any positional image path is ignored.
 
 <!-- HELP_START -->
 
