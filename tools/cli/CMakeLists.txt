@@ -22,6 +22,10 @@ add_executable(${TARGET} main.cpp)
 target_link_libraries(${TARGET} PRIVATE llama-cli-impl)
 target_compile_features(${TARGET} PRIVATE cxx_std_17)
 
+add_executable(cli-openai-img EXCLUDE_FROM_ALL cli-openai-img.cpp)
+target_link_libraries(cli-openai-img PRIVATE llama-cli-impl)
+target_compile_features(cli-openai-img PRIVATE cxx_std_17)
+
 if(LLAMA_TOOLS_INSTALL)
     install(TARGETS ${TARGET} RUNTIME)
 endif()
